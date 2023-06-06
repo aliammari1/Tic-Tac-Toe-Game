@@ -1,8 +1,11 @@
+const container = document.querySelector(".container");
 const squares = document.querySelectorAll(".square");
 const gameContainer = document.querySelector(".game");
 const result = document.querySelector(".result");
 const resultContainer = document.querySelector(".resultContainer");
 const squaresContent = document.querySelectorAll(".content");
+const startButton = document.querySelector(".startButton");
+const replayButton = document.querySelector(".replayButton");
 let turn = 0;
 
 for (let i = 0; i < squares.length; i++) {
@@ -22,6 +25,12 @@ function replay() {
     resultContainer.classList.add("hidden");
   }
   turn = 0;
+}
+
+function start() {
+  gameContainer.classList.remove("hidden");
+  replayButton.classList.remove("hidden");
+  startButton.classList.add("hidden");
 }
 
 function checkWin(player) {

@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="game">
+      <div class="game hidden">
         <div class="square"><p class="content"></p></div>
         <div class="square"><p class="content"></p></div>
         <div class="square"><p class="content"></p></div>
@@ -24,8 +24,8 @@
         </div>
       </div>
       <div>
-        <!-- <button onclick="start()">start</button> -->
-        <button onclick="replay()">replay</button>
+        <button class="startButton" onclick="start()">start</button>
+        <button class="replayButton hidden" onclick="replay()">replay</button>
       </div>
     </div>
     <script src="script.js"></script>
