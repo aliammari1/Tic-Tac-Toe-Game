@@ -1,4 +1,5 @@
 const squares = document.querySelectorAll(".square");
+const game = document.querySelector(".game");
 let turn = 0;
 
 for (let square of squares) {
@@ -13,33 +14,32 @@ for (let square of squares) {
       square.appendChild(p);
     }
     turn++;
-    game();
+    gameplay();
   });
 }
 
-const start = () => {
-  const divs = document.querySelectorAll(".game div");
-  const game = document.querySelector(".game");
-  if (turn === 9 || divs.length === 10) {
+function start() {
+  if (turn === 9 || squares.length === 10) {
     for (let square of squares) square.textContent = "";
     turn = 0;
-    for (let div of divs) div.classList.remove("hidden");
+    for (let square of squares) square.classList.remove("hidden");
     game.removeChild(game.lastChild);
   }
 };
 
-const replay = () => {
-  const divs = document.querySelectorAll(".game div");
-  const game = document.querySelector(".game");
-  if (divs.length === 10) {
-    for (let div of divs) div.classList.remove("hidden");
+function replay() {
+  const squares = document.querySelectorAll(".game square");
+  if (squares.length === 10) {
+    for (let square of squares) square.classList.remove("hidden");
     game.removeChild(game.lastChild);
   }
   for (let square of squares) square.textContent = "";
   turn = 0;
 };
 
-const game = () => {
+function checkWin()  {}
+
+function gameplay() {
   if (
     (squares[0].textContent == "X" &&
       squares[1].textContent == "X" &&
@@ -68,8 +68,8 @@ const game = () => {
   ) {
     let p = document.createElement("p");
     p.innerHTML = "Player X wins!";
-    const divs = document.querySelectorAll(".game div");
-    for (let div of divs) div.classList.add("hidden");
+    const squares = document.querySelectorAll(".game square");
+    for (let square of squares) square.classList.add("hidden");
     const div = document.createElement("div");
     div.style.color = "white";
     div.appendChild(p);
