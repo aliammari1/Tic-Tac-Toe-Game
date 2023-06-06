@@ -28,8 +28,9 @@ function replay() {
 }
 
 function start() {
-  gameContainer.classList.remove("hidden");
-  replayButton.classList.remove("hidden");
+  [gameContainer, replayButton].forEach((element) =>
+    element.classList.remove("hidden")
+  );
   startButton.classList.add("hidden");
 }
 
