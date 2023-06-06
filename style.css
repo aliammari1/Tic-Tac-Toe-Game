@@ -10,7 +10,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .game {
@@ -18,9 +17,8 @@
   height: 600px;
   margin: 16px auto;
   background-color: #000;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .square {
@@ -55,4 +53,8 @@ div > p {
 
 .hidden {
   display: none;
+}
+
+.white {
+  color: #fff;
 }
