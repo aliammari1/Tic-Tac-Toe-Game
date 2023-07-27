@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run HTML file",
+			"type": "shell",
+			"command": "start ${workspaceFolder}/index.html",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
