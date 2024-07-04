@@ -1,16 +1,17 @@
 "use client";
-import React, {useState} from "react";
-import {Button} from "@/components/ui/button";
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 /**
  * @description Defines a React component that displays a simple game of tic-tac-toe.
  * It uses state to keep track of the current game state, including who is playing
  * and the current turn. The `handlePlay` and `handleReplay` functions are called
  * when the player clicks on a cell in the game board.
- * 
+ *
  * @returns {HTML division element} a game interface with a tic-tac-toe board and
  * buttons for starting and stopping the game.
- * 
+ *
  * 	* `<div className="bg-white w-screen h-screen">`: This is the main div element
  * that contains all the game components. It has a class of "bg-white" for a white
  * background and "w-screen" to cover the entire screen width. It also has a height
@@ -64,17 +65,19 @@ export default function Home() {
   /**
    * @description Updates the game state by modifying the `valueArray` and `turn`
    * variables, then logs the current turn to the console.
-   * 
+   *
    * @param {number} index - 0-based index of the current game space on which the move
    * is being made, and is used to determine the appropriate symbol to be assigned to
    * that position in the value array.
    */
+
   const handlePlay = (index: number) => {
-    console.log(turn);
     let newValueArray = [...valueArray];
-    newValueArray[index] = turn % 2 ? "X" : "O";
+    if (newValueArray[index] !== "") return;
+    newValueArray[index] = turn % 2 ? "O" : "X";
     setTurn(turn + 1);
     setValueArray(newValueArray);
+    checkWin();
   };
 
   /**
@@ -86,71 +89,99 @@ export default function Home() {
     setValueArray(new Array(9).fill(""));
   };
 
+  const checkWin = () => {
+    if (
+      (valueArray[0] === valueArray[1] &&
+        valueArray[1] === valueArray[2] &&
+        valueArray[0] !== "") ||
+      (valueArray[3] === valueArray[4] &&
+        valueArray[4] === valueArray[5] &&
+        valueArray[3] !== "") ||
+      (valueArray[6] === valueArray[7] &&
+        valueArray[7] === valueArray[8] &&
+        valueArray[6] !== "") ||
+      (valueArray[0] === valueArray[3] &&
+        valueArray[3] === valueArray[6] &&
+        valueArray[0] !== "") ||
+      (valueArray[1] === valueArray[4] &&
+        valueArray[4] === valueArray[7] &&
+        valueArray[1] !== "") ||
+      (valueArray[2] === valueArray[5] &&
+        valueArray[5] === valueArray[8] &&
+        valueArray[2] !== "") ||
+      (valueArray[0] === valueArray[4] &&
+        valueArray[4] === valueArray[8] &&
+        valueArray[0] !== "") ||
+      (valueArray[2] === valueArray[4] &&
+        valueArray[4] === valueArray[6] &&
+        valueArray[2] !== "")
+    ) {
+      alert(`${valueArray[0]} wins!`);
+      handleReplay();
+    }
+  };
+
   return (
-    <div className="bg-white w-screen h-screen">
-      <div
-        className={"game flex justify-center " + (!isPlaying ? "hidden" : "")}
-      >
+    <div className="w-screen h-screen flex justify-center">
+      <div className={"absolute " + (!isPlaying ? "hidden" : "")}>
         {/**
          * @description Handles player click event
-         * 
+         *
          * @param {string} className - CSS class or styles to be applied to each component
          * in the `grid` layout, enabling developers to define specific styles for each component.
          */}
-        <div className="grid gap-2 grid-cols-3 grid-rows-3 w-fit">
+        <div className="grid gap-2 grid-cols-3 grid-rows-3">
           {valueArray.map((value: string, index: number) => (
-            <div
+            <Card
               key={index}
-              className="w-40 h-40 flex justify-center items-center border-solid border-2 border-black"
+              className="w-40 h-40 flex justify-center items-center border-solid border-2 "
               onClick={() => handlePlay(index)}
             >
-              <p className="content font-bold text-4xl text-[100px] text-black">
+              <p className="content font-bold text-4xl text-[100px] ">
                 {value}
               </p>
-            </div>
+            </Card>
           ))}
         </div>
-        <div className={"resultContainer " + (!isPlaying ? "hidden" : "")}>
-          <p className={"result " + (!isPlaying ? "hidden" : "")}></p>
+        <div className={"" + (!isPlaying ? "hidden" : "")}>
+          <p className={"" + (!isPlaying ? "hidden" : "")}></p>
         </div>
       </div>
-      <div className="flex justify-center items-center w-screen h-screen absolute">
-        <div className="absolute">
-          {/**
-           * @description Sets the `isPlaying` state variable to the opposite value of its
-           * current value when the button is clicked.
-           * 
-           * @param {string} className - class name for the button element when the button is
-           * played or hidden.
-           * 
-           * @param {string} variant - CSS property to apply to the Button component's outline
-           * style when it is clicked, allowing for customization of its appearance.
-           * 
-           * @param {`OnClickEvent`.} onClick - event handler that is triggered when the button
-           * is clicked, setting the `isPlaying` variable to its opposite value.
-           * 
-           * 	* `className`: A string representing a set of class names that can be added to
-           * the button element. It is either "hidden" or an empty string.
-           * 	* `variant`: A string representing one of the possible variant options for the
-           * button, which is currently `outline`.
-           * 	* `onClick`: The function to call when the button is clicked. Its purpose is to
-           * set the `isPlaying` state to its opposite value.
-           */}
-          <Button
-            className={"startButton " + (isPlaying ? "hidden" : "")}
-            variant="outline"
-            onClick={() => setIsPlaying(!isPlaying)}
-          >
-            start
-          </Button>
-          <Button
-            className={"replayButton " + (!isPlaying ? "hidden" : "")}
-            variant="outline"
-            onClick={handleReplay}
-          >
-            Stop Game
-          </Button>
-        </div>
+      <div className="flex justify-center items-center w-full">
+        {/**
+         * @description Sets the `isPlaying` state variable to the opposite value of its
+         * current value when the button is clicked.
+         *
+         * @param {string} className - class name for the button element when the button is
+         * played or hidden.
+         *
+         * @param {string} variant - CSS property to apply to the Button component's outline
+         * style when it is clicked, allowing for customization of its appearance.
+         *
+         * @param {`OnClickEvent`.} onClick - event handler that is triggered when the button
+         * is clicked, setting the `isPlaying` variable to its opposite value.
+         *
+         * 	* `className`: A string representing a set of class names that can be added to
+         * the button element. It is either "hidden" or an empty string.
+         * 	* `variant`: A string representing one of the possible variant options for the
+         * button, which is currently `outline`.
+         * 	* `onClick`: The function to call when the button is clicked. Its purpose is to
+         * set the `isPlaying` state to its opposite value.
+         */}
+        <Button
+          className={" " + (isPlaying ? "hidden" : "")}
+          variant="outline"
+          onClick={() => setIsPlaying(!isPlaying)}
+        >
+          start
+        </Button>
+        <Button
+          className={" " + (!isPlaying ? "hidden" : "")}
+          variant="outline"
+          onClick={handleReplay}
+        >
+          Stop Game
+        </Button>
       </div>
     </div>
   );
