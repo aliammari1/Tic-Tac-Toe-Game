@@ -90,33 +90,29 @@ export default function Home() {
   };
 
   const checkWin = () => {
-    if (
-      (valueArray[0] === valueArray[1] &&
-        valueArray[1] === valueArray[2] &&
-        valueArray[0] !== "") ||
-      (valueArray[3] === valueArray[4] &&
-        valueArray[4] === valueArray[5] &&
-        valueArray[3] !== "") ||
-      (valueArray[6] === valueArray[7] &&
-        valueArray[7] === valueArray[8] &&
-        valueArray[6] !== "") ||
-      (valueArray[0] === valueArray[3] &&
-        valueArray[3] === valueArray[6] &&
-        valueArray[0] !== "") ||
-      (valueArray[1] === valueArray[4] &&
-        valueArray[4] === valueArray[7] &&
-        valueArray[1] !== "") ||
-      (valueArray[2] === valueArray[5] &&
-        valueArray[5] === valueArray[8] &&
-        valueArray[2] !== "") ||
-      (valueArray[0] === valueArray[4] &&
-        valueArray[4] === valueArray[8] &&
-        valueArray[0] !== "") ||
-      (valueArray[2] === valueArray[4] &&
-        valueArray[4] === valueArray[6] &&
-        valueArray[2] !== "")
-    ) {
-      alert(`${valueArray[0]} wins!`);
+    const winConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    const winningCondition = winConditions.find(condition => {
+      const [a, b, c] = condition;
+      return (
+        valueArray[a] === valueArray[b] &&
+        valueArray[b] === valueArray[c] &&
+        valueArray[a] !== ""
+      );
+    });
+
+    if (winningCondition) {
+      const [a, b, c] = winningCondition;
+      alert(`${valueArray[a]} wins!`);
       handleReplay();
     }
   };
