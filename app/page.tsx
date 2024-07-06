@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 
 /**
  * @description Defines a React component that displays a simple game of tic-tac-toe.
@@ -57,10 +58,12 @@ import { Card } from "@/components/ui/card";
  * element has an `className` attribute that sets its styles and hides it when the
  * game is in progress.
  */
+
 export default function Home() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [valueArray, setValueArray] = useState(new Array(9).fill(""));
   const [turn, setTurn] = useState<number>(0);
+  const { toast } = useToast();
 
   /**
    * @description Updates the game state by modifying the `valueArray` and `turn`
@@ -77,8 +80,13 @@ export default function Home() {
     newValueArray[index] = turn % 2 ? "O" : "X";
     setTurn(turn + 1);
     setValueArray(newValueArray);
-    checkWin();
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      checkWin();
+    }, 500);
+  }, [valueArray]);
 
   /**
    * @description Sets `turn` to 0 and initializes a new array with nine elements filled
@@ -98,10 +106,10 @@ export default function Home() {
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]
+      [2, 4, 6],
     ];
 
-    const winningCondition = winConditions.find(condition => {
+    const winningCondition = winConditions.find((condition) => {
       const [a, b, c] = condition;
       return (
         valueArray[a] === valueArray[b] &&
@@ -111,15 +119,24 @@ export default function Home() {
     });
 
     if (winningCondition) {
-      const [a, b, c] = winningCondition;
-      alert(`${valueArray[a]} wins!`);
+      const a = winningCondition[0];
+      toast({ description: `${valueArray[a]} wins!` });
+      handleReplay();
+    }
+    if (turn === 9) {
+      toast({ description: "It's a draw!" });
       handleReplay();
     }
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center">
-      <div className={"absolute " + (!isPlaying ? "hidden" : "")}>
+    <div className="w-screen h-screen flex justify-center items-center">
+      <div
+        className={
+          "flex justify-center items-center absolute " +
+          (!isPlaying ? "hidden" : "")
+        }
+      >
         {/**
          * @description Handles player click event
          *
@@ -139,11 +156,8 @@ export default function Home() {
             </Card>
           ))}
         </div>
-        <div className={"" + (!isPlaying ? "hidden" : "")}>
-          <p className={"" + (!isPlaying ? "hidden" : "")}></p>
-        </div>
       </div>
-      <div className="flex justify-center items-center w-full">
+      <div className="flex justify-center items-center z-10">
         {/**
          * @description Sets the `isPlaying` state variable to the opposite value of its
          * current value when the button is clicked.
@@ -172,7 +186,7 @@ export default function Home() {
           start
         </Button>
         <Button
-          className={" " + (!isPlaying ? "hidden" : "")}
+          className={" " + (!isPlaying ? "hidden" : "absolute top-5")}
           variant="outline"
           onClick={handleReplay}
         >
